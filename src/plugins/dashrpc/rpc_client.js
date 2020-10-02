@@ -28,7 +28,7 @@ var kyanRpcClient = {
 	 * Executes 'masternode outputs' rpc call and checks if the 'TxId & TxOutputId' is included in the results. Returns boolean.
 	 * 
 	 * @param (string) TxId: Collateral Transaction ID
-	 * @param (int) TxOutputId: Collateral Transaction Output ID. Can be given null or empty **only** for a single collateral transaction. For multi collateral transactions, giving only the TxId is not enough to identify the transaction hence checking the collateral. 
+	 * @param (int) TxOutputId: Collateral Transaction Output ID. Can be given null or empty **only** for a single collateral transaction. For multi collateral transactions, giving only the TxId is not enough to identify each discrete transaction hence checking the collateral. 
 	 * 
 	 * @returns boolean
 	 */
@@ -122,7 +122,7 @@ var kyanRpcClient = {
 		//TODO: 'signmessage' rpc call codes.
 
 		// Return example
-		return 'aba8c22f8992d78fd4ff0c94cb19a5c30e62e7587ee43d5285296a4e6e5af062';
+		return 'II8JvEBMj6I3Ws8wqxh0bXVds6Ny+7h5HAQhqmd5r/0lWBCpsxMJHJT3KBcZ23oUZtsa6gjgISf+a8GzJg1BfEg=';
 	},
 
 	/**
