@@ -32,7 +32,7 @@ var kyanRpcClient = {
 	 * 
 	 * @returns boolean
 	 */
-	checkCollateralTxID: (TxId, TxOutputId = 0) => {
+	checkCollateralTransaction: (TxId, TxOutputId = 0) => {
 
 		//TODO: Code that makes 'masternode outputs' rpc call and executes checks explained in the function description.
 
