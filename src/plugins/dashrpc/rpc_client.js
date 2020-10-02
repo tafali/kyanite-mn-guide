@@ -142,3 +142,4 @@ var kyanRpcClient = {
 	}
 } 
 
+export default kyanRpcClient;
