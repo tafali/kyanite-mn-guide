@@ -19,7 +19,7 @@ rpc.getRawMemPool()
 	});
 */
 
-var kyanRpcClint = {
+var kyanRpcClient = {
 
 //TODO: using rpc.generateRPCMethods(constructor, apiCalls, rpc) function defined in @dashevo/dashd-rpc/lib/index.js, a new rpc call named 'generateNewAddressWithLabel' should be defined to be able to label the different kind of addresses. By default, @dashevo/dashd-rpc package only has 'generateNewAddress' function which does not take any parameters.
 
