@@ -4,6 +4,7 @@ var RpcClient = require('@dashevo/dashd-rpc/promise');
 var rpc = new RpcClient(RpcConfig);
 
 /* RPC call example
+https://github.com/dashevo/dashd-rpc/
 
 rpc.getRawMemPool()
     .then(ret => {
@@ -21,7 +22,9 @@ rpc.getRawMemPool()
 
 var kyanRpcClient = {
 
-//TODO: using rpc.generateRPCMethods(constructor, apiCalls, rpc) function defined in @dashevo/dashd-rpc/lib/index.js, a new rpc call named 'generateNewAddressWithLabel' should be defined to be able to label the different kind of addresses. By default, @dashevo/dashd-rpc package only has 'generateNewAddress' function which does not take any parameters.
+//TODO: Using rpc.generateRPCMethods(constructor, apiCalls, rpc) function defined in @dashevo/dashd-rpc/lib/index.js (https://github.com/dashevo/dashd-rpc/lib/index.js), a new rpc call named 'generateNewAddressWithLabel' should be defined to be able to label the different kind of addresses. By default, @dashevo/dashd-rpc package only has 'generateNewAddress' function which does not take any parameters.
+
+//TODO: Using rpc.generateRPCMethods(constructor, apiCalls, rpc) function defined in @dashevo/dashd-rpc/lib/index.js, a new rpc call named 'blsGenerate' should be defined to be able to generate the bls keys via rpc.
 
 
 	/**
@@ -99,7 +102,7 @@ var kyanRpcClient = {
 	 */
 	prepareProtxRegister: (collateralHash, collateralIndex, ipAndPort, ownerKeyAddr, operatorPubKey, votingKeyAddr, operatorReward, payoutAddress, feeSourceAddress = '') => {
 
-		//TODO: 'protx register_prepare' rpc call codes.
+		//TODO: 'protx register_prepare' rpc call codes. If 'feeSourceAddress' is given blank or null, use payoutAddress for it.
 
 		// Return example
 		return {

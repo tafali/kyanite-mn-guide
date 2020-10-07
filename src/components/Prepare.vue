@@ -22,7 +22,7 @@
                {{d.addrVoting}}  
                0  
                {{d.addrPayout}}  
-               {{d.addrFee}}  
+               {{d.addrFee}}  <!-- Alert user about this address. It should have coins to pay the transaction fees in it. Also alert that if this address is given blank, payoutAddress will be used for the transaction fees. -->
             </code>
         </p>
       </v-col>
