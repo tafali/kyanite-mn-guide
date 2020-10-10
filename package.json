@@ -13,7 +13,6 @@
   },
   "main": "background.js",
   "dependencies": {
-    "@dashevo/dashd-rpc": "^2.0.0",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vuetify": "^2.2.11"

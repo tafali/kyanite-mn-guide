@@ -5,9 +5,72 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import { exec, execSync } from 'child_process'
 
+var http = require('http');
 const path = require('path')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+function runRpc(cmd) {
+  return new Promise((resolve, reject) => {
+
+    //simdilik burada sabit, sonra, onyuzden alinan kullanilacak
+    const RpcConfig = {
+      user: 'asdf',
+      pass: '1234',
+      host: '127.0.0.1',
+      port: 17577
+    };
+    
+    var options = {
+      host: RpcConfig.host,
+      path: '/',
+      method: 'POST',
+      port: RpcConfig.port,
+      //rejectUnauthorized: true,
+      //agent: false 
+    };
+
+    var req = http.request(options, function (res) {
+
+      var buf = '';
+      res.on('data', function (data) {
+        buf += data;
+      });
+
+      res.on('end', function () {
+        if (res.statusCode === 401) {
+          reject('Connection Rejected: 401 Unnauthorized')
+        } else if (res.statusCode === 403) {
+          reject('Connection Rejected: 403 Forbidden')
+        } else if (res.statusCode === 500) {
+          reject(buf.toString('utf8'))
+        } else {
+          var parsedBuf;
+          try {
+            parsedBuf = JSON.parse(buf);
+            resolve(parsedBuf);
+          } catch (e) {
+            console.log(e.stack);
+            console.log(buf);
+            reject('HTTP Status code:' + res.statusCode);
+          }
+        }
+      });
+    });
+
+    req.on('error', function (e) {  
+      reject( 'Request Error: ' + e.message)
+    });
+
+    const request = JSON.stringify(cmd);
+
+    req.setHeader('Content-Length', request.length);
+    req.setHeader('Content-Type', 'application/json');
+    req.setHeader('Authorization', 'Basic ' + Buffer.from(`${RpcConfig.user}:${RpcConfig.pass}`).toString('base64'));
+    req.write(request);
+    req.end();
+  });
+}
 
 function runCmd(cmd) {
   try {
@@ -28,10 +91,15 @@ function runCmd(cmd) {
   */
 }
 
+ipcMain.handle('rpc', async(event, cmd) => {
+  const x = await runRpc(cmd)
+  console.log(x)
+  return x
+})
+
 ipcMain.handle('runCmd', (event, cmd) => {
-  console.log( cmd )
   const x = runCmd(cmd)
-  console.log( "x : " + x )
+  console.log(x)
   return x
 })
 

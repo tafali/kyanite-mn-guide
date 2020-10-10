@@ -5,6 +5,7 @@
       <v-col class="mb-4">
         <p>Please copy and paste your <code>rpcuser</code> and <code>rpcpassword</code> for Kyanite from kyan.conf file located in Kyanite Wallet data directory.</p>
         <p>Leave blank if you do not have <code>rpcuser</code> and <code>rpcpassword</code> sections in kyan.conf file or if kyan.conf file is empty.</p>
+        <p>Test Result : {{testResult}}</p>
       </v-col>
     </v-row>
 
@@ -65,24 +66,36 @@
 	import RpcConfig from '../plugins/dashrpc/rpc_config'
 	export default {
 		props: {
-		nextf: { type: Function },
+      nextf: { type: Function },
 		},
 
 		data: () => ({
-		v: {
-			rpcUser:RpcConfig.user,
-			rpcPassword:RpcConfig.pass,
-		}
+      v: {
+        rpcUser:RpcConfig.user,
+        rpcPassword:RpcConfig.pass,
+      },
+      testResult:''
 		}),
 
 		methods: {
-		testConnection(){
-			// make a 'getnetworkinfo' rpc call to test the connection. 'getinfo' rpc call is deprecated and will be removed in the next version (soon).
-			console.log('Connection Test Run');
-		},
-		next(){
-			this.nextf(this.v)
-		}
+      testConnection(){
+        window.ipcRenderer.invoke('rpc', 
+          {
+            'jsonrpc': '2.0', 
+            'id': 'kmg' + parseInt(Math.random() * 100000), 
+            'method': 'getnetworkinfo', //getinfo
+            'params': [] 
+          }
+          )
+        .then((result) => {
+          console.log(result)
+          this.testResult = result
+        })
+      },
+
+      next(){
+        this.nextf(this.v)
+      }
 		}
 	}
 </script>
