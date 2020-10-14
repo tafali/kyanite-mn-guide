@@ -32,19 +32,6 @@
             </v-btn>
         </p>
 
-        <p>
-          Test <code>pwd</code> 
-            <v-btn icon color="indigo" @click="runcmd('pwd')">
-              <v-icon>mdi-arrow-right-drop-circle</v-icon>
-            </v-btn>
-        </p>
-
-        <div v-if="runret">
-          <v-alert :type="runret.success ? 'success' : 'error'">
-            {{runret.message}}
-          </v-alert>
-        </div>
-
       </v-col>
     </v-row>
 
@@ -94,7 +81,6 @@
     },
 
     data: () => ({
-      runret:null,
       v: {
         collateralHash:'',
         collateralIndex:''
@@ -104,16 +90,6 @@
     methods: {
       next(){
         this.nextf(this.v)
-      },
-
-      runcmd(cmd){
-        window.ipcRenderer.invoke('runCmd', cmd)
-        .then((result) => {
-          this.runret = result
-
-          if(this.runret.success)
-            this.v.collateralHash = this.runret.message
-        })
       }
     }
   }

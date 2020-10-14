@@ -10,17 +10,16 @@ const path = require('path')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+let RpcConfig = {
+  user: 'asdf',
+  pass: '1234',
+  host: '127.0.0.1',
+  port: 17577
+};
+
 function runRpc(cmd) {
   return new Promise((resolve, reject) => {
 
-    //simdilik burada sabit, sonra, onyuzden alinan kullanilacak
-    const RpcConfig = {
-      user: 'asdf',
-      pass: '1234',
-      host: '127.0.0.1',
-      port: 17577
-    };
-    
     var options = {
       host: RpcConfig.host,
       path: '/',
@@ -39,7 +38,7 @@ function runRpc(cmd) {
 
       res.on('end', function () {
         if (res.statusCode === 401) {
-          reject('Connection Rejected: 401 Unnauthorized')
+          reject('Connection Rejected: 401 Unauthorized. Please check user/pass')
         } else if (res.statusCode === 403) {
           reject('Connection Rejected: 403 Forbidden')
         } else if (res.statusCode === 500) {
@@ -91,10 +90,20 @@ function runCmd(cmd) {
   */
 }
 
+ipcMain.handle('RpcConfig', (event, cfg) => {
+  if(cfg)
+    RpcConfig = cfg
+  
+  return RpcConfig
+})
+
 ipcMain.handle('rpc', async(event, cmd) => {
-  const x = await runRpc(cmd)
-  console.log(x)
-  return x
+  try {
+    const x = await runRpc(cmd)
+    return {'success': true, 'result': x}
+  } catch (error) {
+    return {'success': false, 'result': error}
+  }
 })
 
 ipcMain.handle('runCmd', (event, cmd) => {
@@ -106,7 +115,7 @@ ipcMain.handle('runCmd', (event, cmd) => {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
-global.sharedObj = {prop1: null};
+//global.sharedObj = {prop1: null};
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -132,7 +141,7 @@ function createWindow() {
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
+    //if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
