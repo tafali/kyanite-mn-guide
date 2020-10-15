@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain ,nativeImage} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import { exec, execSync } from 'child_process'
@@ -126,8 +126,9 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 850,
-    height: 700,
+    height: 650,
     frame: true, 
+    icon: nativeImage.createFromPath(path.join(__dirname, 'assets/kyanlogo64.png')),
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
