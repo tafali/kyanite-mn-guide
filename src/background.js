@@ -5,9 +5,71 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import { exec, execSync } from 'child_process'
 
+var http = require('http');
 const path = require('path')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+let RpcConfig = {
+  user: '',
+  pass: '',
+  host: '127.0.0.1',
+  port: 17577
+};
+
+function runRpc(cmd) {
+  return new Promise((resolve, reject) => {
+
+    var options = {
+      host: RpcConfig.host,
+      path: '/',
+      method: 'POST',
+      port: RpcConfig.port,
+      //rejectUnauthorized: true,
+      //agent: false 
+    };
+
+    var req = http.request(options, function (res) {
+
+      var buf = '';
+      res.on('data', function (data) {
+        buf += data;
+      });
+
+      res.on('end', function () {
+        if (res.statusCode === 401) {
+          reject('Connection Rejected: 401 Unauthorized. Please check user/pass')
+        } else if (res.statusCode === 403) {
+          reject('Connection Rejected: 403 Forbidden')
+        } else if (res.statusCode === 500) {
+          reject(buf.toString('utf8'))
+        } else {
+          var parsedBuf;
+          try {
+            parsedBuf = JSON.parse(buf);
+            resolve(parsedBuf);
+          } catch (e) {
+            console.log(e.stack);
+            console.log(buf);
+            reject('HTTP Status code:' + res.statusCode);
+          }
+        }
+      });
+    });
+
+    req.on('error', function (e) {  
+      reject( 'Request Error: ' + e.message)
+    });
+
+    const request = JSON.stringify(cmd);
+
+    req.setHeader('Content-Length', request.length);
+    req.setHeader('Content-Type', 'application/json');
+    req.setHeader('Authorization', 'Basic ' + Buffer.from(`${RpcConfig.user}:${RpcConfig.pass}`).toString('base64'));
+    req.write(request);
+    req.end();
+  });
+}
 
 function runCmd(cmd) {
   try {
@@ -28,17 +90,32 @@ function runCmd(cmd) {
   */
 }
 
+ipcMain.handle('RpcConfig', (event, cfg) => {
+  if(cfg)
+    RpcConfig = cfg
+  
+  return RpcConfig
+})
+
+ipcMain.handle('rpc', async(event, cmd) => {
+  try {
+    const x = await runRpc(cmd)
+    return {'success': true, 'result': x}
+  } catch (error) {
+    return {'success': false, 'result': error}
+  }
+})
+
 ipcMain.handle('runCmd', (event, cmd) => {
-  console.log( cmd )
   const x = runCmd(cmd)
-  console.log( "x : " + x )
+  console.log(x)
   return x
 })
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
-global.sharedObj = {prop1: null};
+//global.sharedObj = {prop1: null};
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -49,8 +126,8 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
-    height: 600,
-    frame: false, 
+    height: 650,
+    frame: true, 
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -64,7 +141,7 @@ function createWindow() {
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
+    //if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
