@@ -3,7 +3,7 @@
     <v-row class="text-center">
 
       <v-col class="mb-4">
-        <p>We need a few  
+        <p class="caption" >We need a few  
             <v-chip
               class="ma-2"
               color="indigo"

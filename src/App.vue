@@ -59,6 +59,9 @@ export default {
 		blsSecret:'',
 		blsPublic:'',
 
+		serverIp:'',
+        serverPort:'',
+
 		addrOwner:'',
 		addrVoting:'',
 		addrPayout:'',
@@ -85,6 +88,8 @@ export default {
 			this.d.blsPublic = v.blsPublic
 			this.c = 'Server'
 		} else if(this.c === 'Server'){
+			this.d.serverIp = v.serverIp
+			this.d.serverPort = v.serverPort
 			this.c = 'Address'
 		} else if(this.c === 'Address'){
 			this.d.addrOwner = v.addrOwner

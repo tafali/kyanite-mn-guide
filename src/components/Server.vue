@@ -25,8 +25,26 @@
     </v-row>
 
     <v-row>
+      <v-col cols="5">
+        <v-text-field
+          label="Server IP"
+          outlined
+          v-model="v.serverIp"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="5">
+        <v-text-field
+          label="Server Port"
+          outlined
+          v-model="v.serverPort"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+
+    <v-row>
       <v-col cols="12">
           <v-btn
+          :disabled="v.serverIp.length === 0 || v.serverPort.length === 0 "
           color="blue-grey"
           class="ma-2 white--text"
           @click="next"
@@ -51,6 +69,8 @@
 
     data: () => ({
       v: {
+        serverIp:'',
+        serverPort:'7577'
       }
     }),
 

@@ -16,7 +16,7 @@
             <code>protx register_prepare 
                {{d.collateralHash}}  
                {{d.collateralIndex}}  
-               ipport  
+               {{d.serverIp}}:{{d.serverPort}}   
                {{d.addrOwner}}  
                {{d.blsPublic}}  
                {{d.addrVoting}}  
@@ -129,7 +129,7 @@
             'jsonrpc': '2.0', 
             'id': 'kmg' + parseInt(Math.random() * 100000), 
             'method': 'protx',
-            'params': ['register_prepare', this.d.collateralHash, this.d.collateralIndex, 'ipport',
+            'params': ['register_prepare', this.d.collateralHash, this.d.collateralIndex, this.d.serverIp+':'+this.d.serverPort,
                        this.d.addrOwner, this.d.blsPublic, this.d.addrVoting, 0, this.d.addrPayout, this.d.addrFee] 
           }
           )
