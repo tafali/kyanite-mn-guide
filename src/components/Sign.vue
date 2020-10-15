@@ -17,7 +17,16 @@
                {{d.prepCollateralAddress}}  
                {{d.prepSignMessage}}
             </code>
+            <v-btn icon color="indigo" v-if="!d.manuel" @click="signMessage()">
+              <v-icon>mdi-arrow-right-drop-circle</v-icon>
+            </v-btn>
         </p>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="message">
+      <v-col cols="12">
+          {{message}}
       </v-col>
     </v-row>
 
@@ -73,12 +82,35 @@
     data: () => ({
       v: {
         signAnswer:''
-      }
+      },
+      message: ''
     }),
 
     methods: {
       next(){
         this.nextf(this.v)
+      },
+      signMessage() {
+        window.ipcRenderer.invoke('rpc', 
+          {
+            'jsonrpc': '2.0', 
+            'id': 'kmg' + parseInt(Math.random() * 100000), 
+            'method': 'signmessage',
+            'params': [this.d.prepCollateralAddress, this.d.prepSignMessage] 
+          }
+          )
+          .then((result) => {
+            if(result.success){
+              if(!result.result.error){
+                this.v.signAnswer = result.result.result
+              } else{
+                this.message = result.result.error.code + " : " + result.result.error.message
+              }
+            } else {
+              let err = JSON.parse(result.result)
+              this.message = err.error.code + " : " + err.error.message
+            }
+          })
       }
     }
   }
