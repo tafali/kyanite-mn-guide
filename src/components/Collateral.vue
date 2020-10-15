@@ -27,13 +27,44 @@
               MasterNode Outputs
             </v-chip>  
             with <code>masternode outputs</code> 
-            <v-btn icon color="indigo" v-if="!d.manuel" @click="runcmd('./kyan-cli masternode outputs')">
+            <v-btn icon color="indigo" v-if="!d.manuel" @click="masternodeOutputs()">
               <v-icon>mdi-arrow-right-drop-circle</v-icon>
             </v-btn>
         </p>
 
       </v-col>
     </v-row>
+
+    <v-row v-if="message">
+      <v-col cols="12">
+          {{message}}
+      </v-col>
+    </v-row>
+
+    <v-simple-table v-if="mouts.length">
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">
+              Collateral Hash
+            </th>
+            <th class="text-left">
+              Collateral Index
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="item in mouts"
+            :key="item.hash"
+            @click="v.collateralHash = item.hash; v.collateralIndex = item.index; "
+          >
+            <td>{{ item.hash }}</td>
+            <td>{{ item.index }}</td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
 
     <v-row>
       <v-col cols="9">
@@ -85,12 +116,47 @@
       v: {
         collateralHash:'',
         collateralIndex:''
-      }
+      },
+      message: '',
+      mouts: []
     }),
 
     methods: {
       next(){
         this.nextf(this.v)
+      },
+      masternodeOutputs() {
+        window.ipcRenderer.invoke('rpc', 
+          {
+            'jsonrpc': '2.0', 
+            'id': 'kmg' + parseInt(Math.random() * 100000), 
+            'method': 'masternode',
+            'params': ['outputs'] 
+          }
+          )
+          .then((result) => {
+            if(result.success){
+              if(!result.result.error){
+                let outs =  result.result.result
+                      /*{
+                        "f6c83fd96bfaa47887c4587cceadeb9af6238a2c86fe36b883c4d7a6867eab0f": "1",
+                        "adsdasdadbfaa47887c4587cceadeb9af6238a2c86fe36b883c4d7a6867eab0f": "2"
+                      }*/
+                if(Object.keys(outs).length == 0){
+                  this.message = "There is no masternode output"
+                } else {
+                  for (const key in outs) {
+                      const ind = outs[key];
+                      this.mouts.push({'hash': key, 'index': ind})
+                  }
+                }
+              } else{
+                this.message = result.result.error.code + " : " + result.result.error.message
+              }
+            } else {
+              this.message = result.result
+            }
+          })
       }
     }
   }
