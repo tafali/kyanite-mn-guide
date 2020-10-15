@@ -17,7 +17,16 @@
                {{d.prepTx}}  
                {{d.signAnswer}}
             </code>
+            <v-btn icon color="indigo" v-if="!d.manuel" @click="submitReg()">
+              <v-icon>mdi-arrow-right-drop-circle</v-icon>
+            </v-btn>
         </p>
+      </v-col>
+    </v-row>
+
+    <v-row v-if="message">
+      <v-col cols="12">
+          {{message}}
       </v-col>
     </v-row>
 
@@ -64,12 +73,35 @@
 
     data: () => ({
       v: {
-      }
+      },
+      message: ''
     }),
 
     methods: {
       next(){
         this.nextf(this.v)
+      },
+      submitReg() {
+        window.ipcRenderer.invoke('rpc', 
+          {
+            'jsonrpc': '2.0', 
+            'id': 'kmg' + parseInt(Math.random() * 100000), 
+            'method': 'protx',
+            'params': ['register_submit', this.d.prepTx, this.d.signAnswer] 
+          }
+          )
+          .then((result) => {
+            if(result.success){
+              if(!result.result.error){
+                this.message = 'Answer :' + result.result.result
+              } else{
+                this.message = result.result.error.code + " : " + result.result.error.message
+              }
+            } else {
+              let err = JSON.parse(result.result)
+              this.message = err.error.code + " : " + err.error.message
+            }
+          })
       }
     }
   }
