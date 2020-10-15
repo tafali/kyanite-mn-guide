@@ -13,7 +13,7 @@
             </v-chip> 
             file at your server. 
 
-            And run it with <code>./kyand</code>
+            And re-run it with <code>./kyand</code>
         </p>
       </v-col>
     </v-row>

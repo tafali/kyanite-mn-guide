@@ -16,7 +16,7 @@
               address
             </v-chip>
             You can generate them with <code>getnewaddress</code>. 
-            You can give it a name, if you want <code>getnewaddress addr_name</code>
+            or if you want <code>getnewaddress addr_name</code>
             <br/>
             And send some coin to the address that will be used for "Fee Address"
         </p>
@@ -26,15 +26,32 @@
     <v-row>
       <v-col cols="12">
         <v-text-field
-          label="Owner Address"
+          label="Name Prefix"
           outlined
-          v-model="v.addrOwner"
+          v-model="namePrefix"
         ></v-text-field>
       </v-col>
     </v-row>
 
     <v-row>
-      <v-col cols="12">
+      <v-col cols="6">
+        <code>getnewaddress {{namePrefix}}_owner</code>
+        <v-btn icon color="indigo" v-if="!d.manuel" @click="newAddress('owner')">
+          <v-icon>mdi-arrow-right-drop-circle</v-icon>
+        </v-btn>
+        <v-text-field
+          label="Owner Address"
+          outlined
+          v-model="v.addrOwner"
+        ></v-text-field>
+      </v-col>
+
+
+      <v-col cols="6">
+        <code>getnewaddress {{namePrefix}}_voting</code>
+        <v-btn icon color="indigo" v-if="!d.manuel" @click="newAddress('voting')">
+          <v-icon>mdi-arrow-right-drop-circle</v-icon>
+        </v-btn>
         <v-text-field
           label="Voting Address"
           outlined
@@ -44,22 +61,28 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12">
+      <v-col cols="6">
+        <code>getnewaddress {{namePrefix}}_payout</code>
+        <v-btn icon color="indigo" v-if="!d.manuel" @click="newAddress('payout')">
+          <v-icon>mdi-arrow-right-drop-circle</v-icon>
+        </v-btn>
         <v-text-field
           label="Payout Address"
           outlined
           v-model="v.addrPayout"
         ></v-text-field>
       </v-col>
-    </v-row>
 
-    <v-row>
-      <v-col cols="12">
+      <v-col cols="6">
+        <code>getnewaddress {{namePrefix}}_fee</code>
+        <v-btn icon color="indigo" v-if="!d.manuel" @click="newAddress('fee')">
+          <v-icon>mdi-arrow-right-drop-circle</v-icon>
+        </v-btn>
         <v-text-field
-          label="Fee Address"
+          label="Fee Address (If you want, you can use 'Payout Address)"
           outlined
           v-model="v.addrFee"
-          hint="This is optional. If this is empty, 'Payout Address' will be used."
+          hint="This is optional. If you want, you can use 'Payout Address'"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -87,6 +110,7 @@
   export default {
     props: {
       nextf: { type: Function },
+      d: Object
     },
 
     data: () => ({
@@ -95,12 +119,42 @@
         addrVoting:'',
         addrPayout:'',
         addrFee:''
-      }
+      },
+      namePrefix:'mn01',
+      message: ''
     }),
 
     methods: {
       next(){
         this.nextf(this.v)
+      },
+      newAddress(tip) {
+        window.ipcRenderer.invoke('rpc', 
+          {
+            'jsonrpc': '2.0', 
+            'id': 'kmg' + parseInt(Math.random() * 100000), 
+            'method': 'getnewaddress',
+            'params': [this.namePrefix + '_' + tip] 
+          }
+          )
+          .then((result) => {
+            if(result.success){
+              if(!result.result.error){
+                if(tip === 'owner')
+                  this.v.addrOwner = result.result.result
+                else if(tip === 'voting')
+                  this.v.addrVoting = result.result.result
+                else if(tip === 'payout')
+                  this.v.addrPayout = result.result.result
+                else if(tip === 'fee')
+                  this.v.addrFee = result.result.result
+              } else{
+                this.message = result.result.error.code + " : " + result.result.error.message
+              }
+            } else {
+              this.message = result.result
+            }
+          })
       }
     }
   }
