@@ -30,14 +30,14 @@
         <v-text-field
           label="IP"
           outlined
-          v-model="v.rpcIp"
+          v-model="rpcIp"
         ></v-text-field>
       </v-col>
       <v-col cols="5">
         <v-text-field
           label="Port"
           outlined
-          v-model="v.rpcPort"
+          v-model="rpcPort"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -47,19 +47,19 @@
         <v-text-field
           label="RPC User"
           outlined
-          v-model="v.rpcUser"
+          v-model="rpcUser"
         ></v-text-field>
       </v-col>
       <v-col cols="5">
         <v-text-field
           label="RPC Password"
           outlined
-          v-model="v.rpcPassword"
+          v-model="rpcPassword"
         ></v-text-field>
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row v-if="v.manuel || (rpcIp && rpcPort && rpcUser && rpcPassword)">
       <v-col cols="12">
           <v-btn
           color="blue-grey"
@@ -86,21 +86,21 @@
     beforeMount: function() {
       window.ipcRenderer.invoke('RpcConfig', null)
             .then((result) => {
-              this.v.rpcIp = result.host
-              this.v.rpcPort = result.port
-              this.v.rpcUser = result.user
-              this.v.rpcPassword = result.pass
+              this.rpcIp = result.host
+              this.rpcPort = result.port
+              this.rpcUser = result.user
+              this.rpcPassword = result.pass
             });
     },
 
 		data: () => ({
       v: {
-        rpcIp:'', 
-        rpcPort:'',
-        rpcUser:'',
-        rpcPassword:'',
         manuel:false
       },
+      rpcIp:'', 
+      rpcPort:'',
+      rpcUser:'',
+      rpcPassword:'',
       testResult:''
 		}),
 
@@ -111,10 +111,10 @@
           this.nextf(this.v)
         } else{
           window.ipcRenderer.invoke('RpcConfig', {
-                                                user: this.v.rpcUser,
-                                                pass: this.v.rpcPassword,
-                                                host: this.v.rpcIp,
-                                                port: this.v.rpcPort
+                                                user: this.rpcUser,
+                                                pass: this.rpcPassword,
+                                                host: this.rpcIp,
+                                                port: this.rpcPort
                                               })
             .then((/*result*/) => {
 

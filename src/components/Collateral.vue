@@ -27,7 +27,7 @@
               MasterNode Outputs
             </v-chip>  
             with <code>masternode outputs</code> 
-            <v-btn icon color="indigo" @click="runcmd('./kyan-cli masternode outputs')">
+            <v-btn icon color="indigo" v-if="!d.manuel" @click="runcmd('./kyan-cli masternode outputs')">
               <v-icon>mdi-arrow-right-drop-circle</v-icon>
             </v-btn>
         </p>
@@ -77,7 +77,8 @@
 <script>
   export default {
     props: {
-      nextf: { type: Function }
+      nextf: { type: Function },
+      d: Object
     },
 
     data: () => ({

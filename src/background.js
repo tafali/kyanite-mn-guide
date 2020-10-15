@@ -11,8 +11,8 @@ const path = require('path')
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 let RpcConfig = {
-  user: 'asdf',
-  pass: '1234',
+  user: '',
+  pass: '',
   host: '127.0.0.1',
   port: 17577
 };
@@ -126,8 +126,8 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
-    height: 600,
-    frame: false, 
+    height: 650,
+    frame: true, 
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info

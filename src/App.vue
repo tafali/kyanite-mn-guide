@@ -51,8 +51,7 @@ export default {
   data: () => ({
     c : 'RpcConfig',
     d : {
-		rpcUser:'',
-		rpcPassword:'',
+		manuel:true,
 
 		collateralHash:'',
 		collateralIndex:'',
@@ -75,8 +74,7 @@ export default {
   methods: {
     entryNext(v) {
 		if(this.c === 'RpcConfig'){
-			this.d.rpcUser = v.rpcUser
-			this.d.rpcPassword = v.rpcPassword
+			this.d.manuel = v.manuel
 			this.c = 'Collateral'
 		} else if(this.c === 'Collateral'){
 			this.d.collateralHash = v.collateralHash
