@@ -10,8 +10,14 @@
 
         <p class="caption" v-if="!v.manuel"> Please copy and paste your <code>rpcuser</code> and <code>rpcpassword</code> 
 			for Kyanite from <code>kyan.conf</code> file located in Kyanite Wallet data directory. If <code>kyan.conf</code> file is empty or there is no lines for <code>rpcuser</code> and <code>rpcpassword</code> please
-			add lines for both and set a username and a strong password to them. Please also add a <code>server=1</code> line to your <code>kyan.conf</code> file and restart the wallet for it to be able to accept rpc commands. <br> <br>
-			Example:<br>
+			add lines for both and set a username and a strong password to them. Please also add a <code>server=1</code> line to your <code>kyan.conf</code> file and restart the wallet for it to be able to accept rpc commands. <br>
+			To run commands, you can use 
+      <v-btn icon color="indigo">
+        <v-icon>mdi-arrow-right-drop-circle</v-icon>
+      </v-btn>
+      button near the command.
+      <br>
+      Example:<br>
 			<code> rpcuser=my-kyanite-rpc-user </code>  <br>
 			<code> rpcpassword=f8b0faff31638e7179f3e8ad4f50a753b1392b07f36fdf4756610855daf9c4ba </code> <br>
 			<v-alert v-if="testResult"
