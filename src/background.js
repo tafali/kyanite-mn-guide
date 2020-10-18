@@ -3,9 +3,8 @@
 import { app, protocol, BrowserWindow, ipcMain ,nativeImage} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-import { exec, execSync } from 'child_process'
 
-var http = require('http');
+const http = require('http');
 const path = require('path')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -20,18 +19,16 @@ let RpcConfig = {
 function runRpc(cmd) {
   return new Promise((resolve, reject) => {
 
-    var options = {
+    const options = {
       host: RpcConfig.host,
       path: '/',
       method: 'POST',
-      port: RpcConfig.port,
-      //rejectUnauthorized: true,
-      //agent: false 
+      port: RpcConfig.port
     };
 
-    var req = http.request(options, function (res) {
+    const req = http.request(options, function (res) {
 
-      var buf = '';
+      let buf = '';
       res.on('data', function (data) {
         buf += data;
       });
@@ -44,21 +41,19 @@ function runRpc(cmd) {
         } else if (res.statusCode === 500) {
           reject(buf.toString('utf8'))
         } else {
-          var parsedBuf;
           try {
-            parsedBuf = JSON.parse(buf);
-            resolve(parsedBuf);
+            resolve(JSON.parse(buf));
           } catch (e) {
             console.log(e.stack);
             console.log(buf);
-            reject('HTTP Status code:' + res.statusCode);
+            reject(`HTTP Status code: ${res.statusCode}`);
           }
         }
       });
     });
 
     req.on('error', function (e) {  
-      reject( 'Request Error: ' + e.message)
+      reject(`Request Error: ${e.message}`)
     });
 
     const request = JSON.stringify(cmd);
@@ -69,25 +64,6 @@ function runRpc(cmd) {
     req.write(request);
     req.end();
   });
-}
-
-function runCmd(cmd) {
-  try {
-    return {"success":true,  "message": execSync(cmd).toString()}
-  } catch (_) {
-    return {"success": false, "message": `"${cmd}" not found in the environment , please install it first.`}
-  }
-  /*
-  exec(cmd, (err, stdout, stderr) => {
-    if (err) {
-      console.error(err)
-    } else {
-    console.log(`stdout: ${stdout}`)
-    console.log(`stderr: ${stderr}`)
-    return stdout
-    }
-  })
-  */
 }
 
 ipcMain.handle('RpcConfig', (event, cfg) => {
@@ -106,12 +82,6 @@ ipcMain.handle('rpc', async(event, cmd) => {
   }
 })
 
-ipcMain.handle('runCmd', (event, cmd) => {
-  const x = runCmd(cmd)
-  console.log(x)
-  return x
-})
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
@@ -126,7 +96,7 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 850,
-    height: 650,
+    height: 680,
     frame: true, 
     icon: nativeImage.createFromPath(path.join(__dirname, 'assets/kyanlogo64.png')),
     webPreferences: {

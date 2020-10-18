@@ -8,7 +8,7 @@
           label="I want to do by manuel"
         ></v-checkbox>
 
-        <p class="caption" v-if="!v.manuel"> Please copy and paste your <code>rpcuser</code> and <code>rpcpassword</code> 
+        <p v-if="!v.manuel"> Please copy and paste your <code>rpcuser</code> and <code>rpcpassword</code> 
 			for Kyanite from <code>kyan.conf</code> file located in Kyanite Wallet data directory. If <code>kyan.conf</code> file is empty or there is no lines for <code>rpcuser</code> and <code>rpcpassword</code> please
 			add lines for both and set a username and a strong password to them. Please also add a <code>server=1</code> line to your <code>kyan.conf</code> file and restart the wallet for it to be able to accept rpc commands. <br>
 			To run commands, you can use 

@@ -45,7 +45,7 @@ export default {
   name: 'App',
 
   components: {
-    RpcConfig,Collateral,BLS,Server,Address,Prepare,Sign,Submit
+    RpcConfig, Collateral, BLS, Server, Address, Prepare, Sign, Submit
   },
 
   data: () => ({
@@ -60,7 +60,7 @@ export default {
 		blsPublic:'',
 
 		serverIp:'',
-        serverPort:'',
+		serverPort:'',
 
 		addrOwner:'',
 		addrVoting:'',
