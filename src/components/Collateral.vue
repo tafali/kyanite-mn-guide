@@ -41,30 +41,18 @@
       </v-col>
     </v-row>
 
-    <v-simple-table v-if="mouts.length">
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">
-              Collateral Hash
-            </th>
-            <th class="text-left">
-              Collateral Index
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="item in mouts"
-            :key="item.hash"
-            @click="v.collateralHash = item.hash; v.collateralIndex = item.index; "
-          >
-            <td>{{ item.hash }}</td>
-            <td>{{ item.index }}</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
+    <v-row v-if="mouts.length">
+      <v-col cols="12">
+        <v-select
+          :items="mouts"
+          v-model="selectedoutput"
+          label="Outputs"
+          outlined
+          @change="selectOutput"
+        >
+        </v-select>
+      </v-col>
+    </v-row>
 
     <v-row>
       <v-col cols="9">
@@ -118,12 +106,20 @@
         collateralIndex:''
       },
       message: '',
-      mouts: []
+      mouts: [],
+      selectedoutput:''
     }),
 
     methods: {
       next(){
         this.nextf(this.v)
+      },
+      selectOutput(){
+        if(this.selectedoutput.indexOf(':') != -1){
+          [this.v.collateralHash, this.v.collateralIndex] = this.selectedoutput.split(':')
+        } else {
+          [this.v.collateralHash, this.v.collateralIndex] = ['', '']
+        }
       },
       masternodeOutputs() {
         window.ipcRenderer.invoke('rpc', 
@@ -135,6 +131,9 @@
           }
           )
           .then((result) => {
+            this.mouts = []
+            this.selectedoutput = ''
+
             if(result.success){
               if(!result.result.error){
                 let outs =  result.result.result
@@ -143,15 +142,15 @@
                         "adsdasdadbfaa47887c4587cceadeb9af6238a2c86fe36b883c4d7a6867eab0f": "2"
                       }*/
                 if(Object.keys(outs).length == 0){
-                  this.message = "There is no masternode output"
+                  this.message = 'There is no masternode output'
                 } else {
                   for (const key in outs) {
                       const ind = outs[key];
-                      this.mouts.push({'hash': key, 'index': ind})
+                      this.mouts.push(key + ':' + ind)
                   }
                 }
               } else{
-                this.message = result.result.error.code + " : " + result.result.error.message
+                this.message = result.result.error.code + ' : ' + result.result.error.message
               }
             } else {
               this.message = result.result
