@@ -58,6 +58,7 @@
       <v-col cols="9">
         <v-text-field
           label="Collateral Hash"
+          :rules="[rules.required, rules.hash64]"
           outlined
           hint="For example, a138b262dc3e3....."
           v-model="v.collateralHash"
@@ -67,6 +68,7 @@
       <v-col cols="3">
         <v-text-field
           label="Collateral Index"
+          :rules="[rules.required, rules.number]"
           outlined
           hint="Number, like 0, 1, 2 ..."
           v-model="v.collateralIndex"
@@ -107,7 +109,18 @@
       },
       message: '',
       mouts: [],
-      selectedoutput:''
+      selectedoutput:'',
+      rules: {
+          required: value => !!value || 'Required.',
+          hash64: value => {
+            const pattern = /^[a-f0-9]{64}$/gm
+            return pattern.test(value) || 'Invalid hash.'
+          },
+          number: value => {
+            const pattern = /^\d+$/gm
+            return pattern.test(value) || 'Invalid number.'
+          }
+        }
     }),
 
     methods: {

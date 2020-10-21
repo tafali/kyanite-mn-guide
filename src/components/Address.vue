@@ -41,6 +41,7 @@
         </v-btn>
         <v-text-field
           label="Owner Address"
+          :rules="[rules.required, rules.kyanaddr]"
           outlined
           v-model="v.addrOwner"
         ></v-text-field>
@@ -54,6 +55,7 @@
         </v-btn>
         <v-text-field
           label="Voting Address"
+          :rules="[rules.required, rules.kyanaddr]"
           outlined
           v-model="v.addrVoting"
         ></v-text-field>
@@ -68,6 +70,7 @@
         </v-btn>
         <v-text-field
           label="Payout Address"
+          :rules="[rules.required, rules.kyanaddr]"
           outlined
           v-model="v.addrPayout"
         ></v-text-field>
@@ -80,6 +83,7 @@
         </v-btn>
         <v-text-field
           label="Fee Address (If you want, you can use 'Payout Address)"
+          :rules="[rules.required, rules.kyanaddr]"
           outlined
           v-model="v.addrFee"
           hint="This is optional. If you want, you can use 'Payout Address'"
@@ -121,7 +125,14 @@
         addrFee:''
       },
       namePrefix:'mn01',
-      message: ''
+      message: '',
+      rules: {
+          required: value => !!value || 'Required.',
+          kyanaddr: value => {
+            const pattern = /^K[a-z0-9]+$/
+            return pattern.test(value) || 'Invalid KYAN Address.'
+          }
+        }
     }),
 
     methods: {

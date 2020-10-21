@@ -58,6 +58,7 @@
       <v-col cols="12">
         <v-text-field
           label="Tx"
+          :rules="[rules.required]"
           outlined
           v-model="v.prepTx"
         ></v-text-field>
@@ -68,6 +69,7 @@
       <v-col cols="12">
         <v-text-field
           label="Collateral Address"
+          :rules="[rules.required]"
           outlined
           v-model="v.prepCollateralAddress"
         ></v-text-field>
@@ -78,6 +80,7 @@
       <v-col cols="12">
         <v-text-field
           label="Sign Message"
+          :rules="[rules.required]"
           outlined
           v-model="v.prepSignMessage"
         ></v-text-field>
@@ -116,7 +119,10 @@
         prepCollateralAddress:'',
         prepSignMessage:''
       },
-      message: ''
+      message: '',
+      rules: {
+          required: value => !!value || 'Required.'
+        }
     }),
 
     methods: {

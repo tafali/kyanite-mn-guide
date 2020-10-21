@@ -33,6 +33,7 @@
       <v-col cols="12">
         <v-text-field
           label="Secret"
+          :rules="[rules.required, rules.hash]"
           outlined
           v-model="v.blsSecret"
         ></v-text-field>
@@ -43,6 +44,7 @@
       <v-col cols="12">
         <v-text-field
           label="Public"
+          :rules="[rules.required, rules.hash]"
           outlined
           v-model="v.blsPublic"
         ></v-text-field>
@@ -80,7 +82,14 @@
         blsSecret:'',
         blsPublic:''
       },
-      message: ''
+      message: '',
+      rules: {
+          required: value => !!value || 'Required.',
+          hash: value => {
+            const pattern = /^[a-f0-9]+$/gm
+            return pattern.test(value) || 'Invalid hash.'
+          }
+        }
     }),
 
     methods: {

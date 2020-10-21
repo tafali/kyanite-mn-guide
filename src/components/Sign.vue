@@ -47,6 +47,7 @@
       <v-col cols="12">
         <v-text-field
           label="Answer"
+          :rules="[rules.required]"
           outlined
           v-model="v.signAnswer"
         ></v-text-field>
@@ -83,7 +84,10 @@
       v: {
         signAnswer:''
       },
-      message: ''
+      message: '',
+      rules: {
+          required: value => !!value || 'Required.'
+        }
     }),
 
     methods: {

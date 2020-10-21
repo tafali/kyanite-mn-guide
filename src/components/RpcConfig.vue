@@ -35,6 +35,7 @@
       <v-col cols="5">
         <v-text-field
           label="IP"
+          :rules="[rules.required]"
           outlined
           v-model="rpcIp"
         ></v-text-field>
@@ -42,6 +43,7 @@
       <v-col cols="5">
         <v-text-field
           label="Port"
+          :rules="[rules.required, rules.port]"
           outlined
           v-model="rpcPort"
         ></v-text-field>
@@ -52,6 +54,7 @@
       <v-col cols="5">
         <v-text-field
           label="RPC User"
+          :rules="[rules.required]"
           outlined
           v-model="rpcUser"
         ></v-text-field>
@@ -59,6 +62,7 @@
       <v-col cols="5">
         <v-text-field
           label="RPC Password"
+          :rules="[rules.required]"
           outlined
           v-model="rpcPassword"
         ></v-text-field>
@@ -107,7 +111,14 @@
       rpcPort:'',
       rpcUser:'',
       rpcPassword:'',
-      testResult:''
+      testResult:'',
+      rules: {
+          required: value => !!value || 'Required.',
+          port: value => {
+            const pattern = /^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/
+            return pattern.test(value) || 'Invalid port.'
+          }
+        }
 		}),
 
 		methods: {
