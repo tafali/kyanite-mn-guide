@@ -42,7 +42,34 @@ function runRpc(cmd) {
           reject(buf.toString('utf8'))
         } else {
           try {
-            resolve(JSON.parse(buf));
+            //there should be more than one collateral outputs in the same tx and this couse json parse problem
+            if(cmd.method === 'masternode' && cmd.params[0] === 'outputs') {
+              /*buf = `{"result":{
+                "sf6c83fd96bfaa47887c4587cceadeb9af6238a2c86fe36b883c4d7a6867eab0f": "1",
+                "f6c83fd96bfaa47887c4587cceadeb9af6238a2c86fe36b883c4d7a6867eab0f": "2"
+              }}`*/
+
+              if(Object.keys(JSON.parse(buf).result).length === 0){
+                resolve([])
+              } else {
+
+                let outsArr = []
+                let rgx = /{([^}]+)}/g
+
+                buf = buf.replace(/\s/g,'')
+                buf = buf.substring(buf.indexOf('{', 5), buf.lastIndexOf('}'))
+                buf = rgx.exec(buf)[1]
+                        .split(',')
+                        .forEach(e => {
+                            let [hash, ind] = e.split(':')
+                            outsArr.push({[hash.trim().replace(/['"]+/g, '').trim()]: ind.trim().replace(/['"]+/g, '').trim()})
+                          });
+                
+                resolve(outsArr)
+              }
+            } else {
+              resolve(JSON.parse(buf));
+            }
           } catch (e) {
             console.log(e.stack);
             console.log(buf);

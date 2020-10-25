@@ -148,22 +148,15 @@
             this.selectedoutput = ''
 
             if(result.success){
-              if(!result.result.error){
-                let outs =  result.result.result
-                      /*{
-                        "f6c83fd96bfaa47887c4587cceadeb9af6238a2c86fe36b883c4d7a6867eab0f": "1",
-                        "adsdasdadbfaa47887c4587cceadeb9af6238a2c86fe36b883c4d7a6867eab0f": "2"
-                      }*/
-                if(Object.keys(outs).length == 0){
+              let outs =  result.result
+
+              if(outs.length == 0){
                   this.message = 'There is no masternode output'
-                } else {
-                  for (const key in outs) {
-                      const ind = outs[key];
-                      this.mouts.push(key + ':' + ind)
-                  }
-                }
-              } else{
-                this.message = result.result.error.code + ' : ' + result.result.error.message
+              } else {
+                outs.forEach(e => {
+                  let [key, ind] = Object.entries(e)[0]
+                  this.mouts.push(key + ':' + ind)
+                }); 
               }
             } else {
               this.message = result.result
