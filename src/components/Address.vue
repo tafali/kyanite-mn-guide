@@ -129,7 +129,7 @@
       rules: {
           required: value => !!value || 'Required.',
           kyanaddr: value => {
-            const pattern = /^K[a-z0-9]+$/
+            const pattern = /^(K|k)[a-z0-9]+$/
             return pattern.test(value) || 'Invalid KYAN Address.'
           }
         }
