@@ -61,6 +61,21 @@
       </v-col>
     </v-row>
 
+    <v-row>
+      <v-col cols="12">
+          <v-btn
+          color="blue-grey"
+          class="ma-2 white--text"
+          @click="newNode"
+          absolute
+          right
+          >
+          Install New Node
+          <v-icon right dark>mdi-arrow-right</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
+
   </v-container>
 </template>
 
@@ -78,7 +93,7 @@
     }),
 
     methods: {
-      next(){
+      newNode(){
         this.nextf(this.v)
       },
       submitReg() {

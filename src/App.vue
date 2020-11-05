@@ -105,6 +105,30 @@ export default {
 		} else if(this.c === 'Sign'){
 			this.d.signAnswer = v.signAnswer
 			this.c = 'Submit'
+		} else if(this.c === 'Submit'){
+			this.d = {
+				manuel:true,
+
+				collateralHash:'',
+				collateralIndex:'',
+
+				blsSecret:'',
+				blsPublic:'',
+
+				serverIp:'',
+				serverPort:'',
+
+				addrOwner:'',
+				addrVoting:'',
+				addrPayout:'',
+				addrFee:'',
+
+				prepTx:'',
+				prepCollateralAddress:'',
+				prepSignMessage:'',
+				signAnswer:''
+			}
+			this.c = 'RpcConfig'
 		}
     }
   }
