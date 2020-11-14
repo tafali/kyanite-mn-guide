@@ -122,8 +122,8 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 850,
-    height: 680,
+    width: 1024,
+    height: 768,
     frame: true, 
     icon: nativeImage.createFromPath(path.join(__dirname, 'assets/kyanlogo64.png')),
     webPreferences: {

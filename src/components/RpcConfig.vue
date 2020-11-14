@@ -5,28 +5,31 @@
       <v-col class="mb-4">
         <v-checkbox
           v-model="v.manuel"
-          label="I want to do by manuel"
-        ></v-checkbox>
+        > <template v-slot:label> <span class="teal--text darken-2 bold"> I want to setup manually </span> </template></v-checkbox>
 
-        <p v-if="!v.manuel"> Please copy and paste your <code>rpcuser</code> and <code>rpcpassword</code> 
-			for Kyanite from <code>kyan.conf</code> file located in Kyanite Wallet data directory. If <code>kyan.conf</code> file is empty or there is no lines for <code>rpcuser</code> and <code>rpcpassword</code> please add these lines and set a username and a strong password to them as shown in the example below. Please also add a <code>server=1</code> line to your <code>kyan.conf</code> file and restart the wallet for it to be able to accept rpc commands. <br>
-			To run commands, you can use 
-      <v-btn icon color="indigo">
-        <v-icon>mdi-arrow-right-drop-circle</v-icon>
-      </v-btn>
-      button near the command.
-      <br>
-      Example:<br>
-			<code> rpcuser=my-kyanite-rpc-user </code>  <br>
-			<code> rpcpassword=f8b0faff31638e7179f3e8ad4f50a753b1392b07f36fdf4756610855daf9c4ba </code> <br>
-			<v-alert v-if="testResult"
-				type="error"
-			>
-			{{testResult}}
-			</v-alert>
-        </p>
-
-        <p v-if="v.manuel">You can copy commands and run on your wallet debug console.</p>
+		<div v-if="!v.manuel">
+			<p> Please copy and paste your <code>rpcuser</code> and <code>rpcpassword</code> 
+				for Kyanite from <code>kyan.conf</code> file located in Kyanite Wallet data directory. If <code>kyan.conf</code> file is empty or there is no lines for <code>rpcuser</code> and <code>rpcpassword</code> please add these lines and set a username and a strong password to them as shown in the example below. Please also add a <code>server=1</code> line to your <code>kyan.conf</code> file and restart the wallet for it to be able to accept rpc commands. 
+			</p>
+			<p class="teal text-center">
+				<span class="pa-3 white--text">To run commands, you can use </span>
+				<v-btn icon color="white">
+					<v-icon>mdi-arrow-right-drop-circle</v-icon>
+				</v-btn>
+				<span class="white--text">button next to the command.</span>
+			</p>
+			<p>
+			<span class="teal--text darken-2 bold">Example:</span><br>
+				<code>rpcuser=my-kyanite-rpc-user</code><br>
+				<code>rpcpassword=f8b0faff31638e7179f3e8ad4f50a753b1392b07f36fdf4756610855daf9c4ba</code><br>
+				<v-alert v-if="testResult"
+					type="error"
+				>
+				{{testResult}}
+				</v-alert>
+			</p>
+		</div>
+        <p v-if="v.manuel" class="teal--text">You can copy commands and run on your wallet debug console.</p>
       </v-col>
     </v-row>
 
