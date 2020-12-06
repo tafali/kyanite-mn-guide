@@ -43,7 +43,7 @@
           label="Owner Address"
           :rules="[rules.required, rules.kyanaddr]"
           outlined
-          v-model="v.addrOwner"
+          v-model="d.addrOwner"
         ></v-text-field>
       </v-col>
 
@@ -57,7 +57,7 @@
           label="Voting Address"
           :rules="[rules.required, rules.kyanaddr]"
           outlined
-          v-model="v.addrVoting"
+          v-model="d.addrVoting"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -72,7 +72,7 @@
           label="Payout Address"
           :rules="[rules.required, rules.kyanaddr]"
           outlined
-          v-model="v.addrPayout"
+          v-model="d.addrPayout"
         ></v-text-field>
       </v-col>
 
@@ -85,7 +85,7 @@
           label="Fee Address (If you want, you can use 'Payout Address)"
           :rules="[rules.required, rules.kyanaddr]"
           outlined
-          v-model="v.addrFee"
+          v-model="d.addrFee"
           hint="This is optional. If you want, you can use 'Payout Address'"
         ></v-text-field>
       </v-col>
@@ -94,7 +94,17 @@
     <v-row>
       <v-col cols="12">
           <v-btn
-          :disabled="v.addrOwner.length === 0 || v.addrVoting.length === 0 || v.addrPayout.length === 0 "
+          color="blue-grey"
+          class="ma-2 white--text"
+          @click="back"
+          absolute
+          left
+          >
+          <v-icon left dark>mdi-arrow-left</v-icon>
+          Back
+          </v-btn>
+          <v-btn
+          :disabled="d.addrOwner.length === 0 || d.addrVoting.length === 0 || d.addrPayout.length === 0 "
           color="blue-grey"
           class="ma-2 white--text"
           @click="next"
@@ -114,16 +124,11 @@
   export default {
     props: {
       nextf: { type: Function },
+      backf: { type: Function },
       d: Object
     },
 
     data: () => ({
-      v: {
-        addrOwner:'',
-        addrVoting:'',
-        addrPayout:'',
-        addrFee:''
-      },
       namePrefix:'mn01',
       message: '',
       rules: {
@@ -137,7 +142,10 @@
 
     methods: {
       next(){
-        this.nextf(this.v)
+        this.nextf()
+      },
+      back(){
+        this.backf()
       },
       newAddress(tip) {
         window.ipcRenderer.invoke('rpc', 
@@ -152,13 +160,13 @@
             if(result.success){
               if(!result.result.error){
                 if(tip === 'owner')
-                  this.v.addrOwner = result.result.result
+                  this.d.addrOwner = result.result.result
                 else if(tip === 'voting')
-                  this.v.addrVoting = result.result.result
+                  this.d.addrVoting = result.result.result
                 else if(tip === 'payout')
-                  this.v.addrPayout = result.result.result
+                  this.d.addrPayout = result.result.result
                 else if(tip === 'fee')
-                  this.v.addrFee = result.result.result
+                  this.d.addrFee = result.result.result
               } else{
                 this.message = result.result.error.code + " : " + result.result.error.message
               }

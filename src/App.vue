@@ -26,7 +26,7 @@
     </v-app-bar>
 
     <v-main>
-      <component :is="c" :nextf="entryNext" :d="d"></component>
+      <component :is="c" :nextf="entryNext" :backf="entryBack" :d="d"></component>
     </v-main>
   </v-app>
 </template>
@@ -51,7 +51,7 @@ export default {
   data: () => ({
     c : 'RpcConfig',
     d : {
-		manuel:true,
+		manuel:false,
 
 		collateralHash:'',
 		collateralIndex:'',
@@ -60,7 +60,7 @@ export default {
 		blsPublic:'',
 
 		serverIp:'',
-		serverPort:'',
+		serverPort:'7577',
 
 		addrOwner:'',
 		addrVoting:'',
@@ -75,39 +75,24 @@ export default {
   }),
 
   methods: {
-    entryNext(v) {
+    entryNext() {
 		if(this.c === 'RpcConfig'){
-			this.d.manuel = v.manuel
 			this.c = 'Collateral'
 		} else if(this.c === 'Collateral'){
-			this.d.collateralHash = v.collateralHash
-			this.d.collateralIndex = v.collateralIndex
 			this.c = 'BLS'
 		} else if(this.c === 'BLS'){
-			this.d.blsSecret = v.blsSecret
-			this.d.blsPublic = v.blsPublic
 			this.c = 'Server'
 		} else if(this.c === 'Server'){
-			this.d.serverIp = v.serverIp
-			this.d.serverPort = v.serverPort
 			this.c = 'Address'
 		} else if(this.c === 'Address'){
-			this.d.addrOwner = v.addrOwner
-			this.d.addrVoting = v.addrVoting
-			this.d.addrPayout = v.addrPayout
-			this.d.addrFee = v.addrFee
 			this.c = 'Prepare'
 		} else if(this.c === 'Prepare'){
-			this.d.prepTx = v.prepTx
-			this.d.prepCollateralAddress = v.prepCollateralAddress
-			this.d.prepSignMessage = v.prepSignMessage
 			this.c = 'Sign'
 		} else if(this.c === 'Sign'){
-			this.d.signAnswer = v.signAnswer
 			this.c = 'Submit'
 		} else if(this.c === 'Submit'){
 			this.d = {
-				manuel:true,
+				manuel:false,
 
 				collateralHash:'',
 				collateralIndex:'',
@@ -116,7 +101,7 @@ export default {
 				blsPublic:'',
 
 				serverIp:'',
-				serverPort:'',
+				serverPort:'7577',
 
 				addrOwner:'',
 				addrVoting:'',
@@ -129,6 +114,23 @@ export default {
 				signAnswer:''
 			}
 			this.c = 'RpcConfig'
+		}
+	},
+    entryBack() {
+		if(this.c === 'Collateral'){
+			this.c = 'RpcConfig'
+		} else if(this.c === 'BLS'){
+			this.c = 'Collateral'
+		} else if(this.c === 'Server'){
+			this.c = 'BLS'
+		} else if(this.c === 'Address'){
+			this.c = 'Server'
+		} else if(this.c === 'Prepare'){
+			this.c = 'Address'
+		} else if(this.c === 'Sign'){
+			this.c = 'Prepare'
+		} else if(this.c === 'Submit'){
+			this.c = 'Sign'
 		}
     }
   }

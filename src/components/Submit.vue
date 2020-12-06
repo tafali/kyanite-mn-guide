@@ -66,6 +66,16 @@
           <v-btn
           color="blue-grey"
           class="ma-2 white--text"
+          @click="back"
+          absolute
+          left
+          >
+          <v-icon left dark>mdi-arrow-left</v-icon>
+          Back
+          </v-btn>
+          <v-btn
+          color="blue-grey"
+          class="ma-2 white--text"
           @click="newNode"
           absolute
           right
@@ -83,18 +93,20 @@
   export default {
     props: {
       nextf: { type: Function },
+      backf: { type: Function },
       d: Object
     },
 
     data: () => ({
-      v: {
-      },
       message: ''
     }),
 
     methods: {
       newNode(){
-        this.nextf(this.v)
+        this.nextf()
+      },
+      back(){
+        this.backf()
       },
       submitReg() {
         window.ipcRenderer.invoke('rpc', 

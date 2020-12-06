@@ -4,10 +4,10 @@
     <v-row>
       <v-col class="mb-4">
         <v-checkbox
-          v-model="v.manuel"
+          v-model="d.manuel"
         > <template v-slot:label> <span class="teal--text darken-2 bold"> I want to setup manually </span> </template></v-checkbox>
 
-		<div v-if="!v.manuel">
+		<div v-if="!d.manuel">
 			<p> Please copy and paste your <code>rpcuser</code> and <code>rpcpassword</code> 
 				for Kyanite from <code>kyan.conf</code> file located in Kyanite Wallet data directory. If <code>kyan.conf</code> file is empty or there is no lines for <code>rpcuser</code> and <code>rpcpassword</code> please add these lines and set a username and a strong password to them as shown in the example below. Please also add a <code>server=1</code> line to your <code>kyan.conf</code> file and restart the wallet for it to be able to accept rpc commands. 
 			</p>
@@ -29,11 +29,11 @@
 				</v-alert>
 			</p>
 		</div>
-        <p v-if="v.manuel" class="teal--text">You can copy commands and run on your wallet debug console.</p>
+        <p v-if="d.manuel" class="teal--text">You can copy commands and run on your wallet debug console.</p>
       </v-col>
     </v-row>
 
-    <v-row v-if="!v.manuel">
+    <v-row v-if="!d.manuel">
       <v-col cols="5">
         <v-text-field
           label="IP"
@@ -52,7 +52,7 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="!v.manuel">
+    <v-row v-if="!d.manuel">
       <v-col cols="5">
         <v-text-field
           label="RPC User"
@@ -71,7 +71,7 @@
       </v-col>
     </v-row>
 
-    <v-row v-if="v.manuel || (rpcIp && rpcPort && rpcUser && rpcPassword)">
+    <v-row v-if="d.manuel || (rpcIp && rpcPort && rpcUser && rpcPassword)">
       <v-col cols="12">
           <v-btn
           color="blue-grey"
@@ -93,6 +93,7 @@
 	export default {
 		props: {
       nextf: { type: Function },
+      d: Object
 		},
 
     beforeMount: function() {
@@ -106,9 +107,6 @@
     },
 
 		data: () => ({
-      v: {
-        manuel:false
-      },
       rpcIp:'', 
       rpcPort:'',
       rpcUser:'',
@@ -126,8 +124,8 @@
 		methods: {
       next(){
 
-        if(this.v.manuel){
-          this.nextf(this.v)
+        if(this.d.manuel){
+          this.nextf()
         } else{
           window.ipcRenderer.invoke('RpcConfig', {
                                                 user: this.rpcUser,
@@ -147,7 +145,7 @@
                 )
                 .then((result) => {
                   if(result.success){
-                    this.nextf(this.v)
+                    this.nextf()
                   } else {
                     this.testResult = result.result
                   }

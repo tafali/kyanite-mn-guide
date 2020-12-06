@@ -35,7 +35,7 @@
           label="Secret"
           :rules="[rules.required, rules.hash]"
           outlined
-          v-model="v.blsSecret"
+          v-model="d.blsSecret"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -46,7 +46,7 @@
           label="Public"
           :rules="[rules.required, rules.hash]"
           outlined
-          v-model="v.blsPublic"
+          v-model="d.blsPublic"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -54,7 +54,17 @@
     <v-row>
       <v-col cols="12">
           <v-btn
-          :disabled="v.blsSecret.length === 0 || v.blsPublic.length === 0 "
+          color="blue-grey"
+          class="ma-2 white--text"
+          @click="back"
+          absolute
+          left
+          >
+          <v-icon left dark>mdi-arrow-left</v-icon>
+          Back
+          </v-btn>
+          <v-btn
+          :disabled="d.blsSecret.length === 0 || d.blsPublic.length === 0 "
           color="blue-grey"
           class="ma-2 white--text"
           @click="next"
@@ -74,14 +84,11 @@
   export default {
     props: {
       nextf: { type: Function },
+      backf: { type: Function },
       d: Object
     },
 
     data: () => ({
-      v: {
-        blsSecret:'',
-        blsPublic:''
-      },
       message: '',
       rules: {
           required: value => !!value || 'Required.',
@@ -94,7 +101,10 @@
 
     methods: {
       next(){
-        this.nextf(this.v)
+        this.nextf()
+      },
+      back(){
+        this.backf()
       },
       blsGenerate() {
         window.ipcRenderer.invoke('rpc', 
@@ -114,8 +124,8 @@
                         "public": "885d01d746c3e4d2093b0975de2d8c1f3e5a2c3e8fdaaed929f86fc9fbb278a095248163c101a2456650b415776b7990"
                       }*/
                       
-                this.v.blsSecret = blso.secret
-                this.v.blsPublic = blso.public
+                this.d.blsSecret = blso.secret
+                this.d.blsPublic = blso.public
               } else{
                 this.message = result.result.error.code + " : " + result.result.error.message
               }

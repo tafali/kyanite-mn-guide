@@ -49,7 +49,7 @@
           label="Answer"
           :rules="[rules.required]"
           outlined
-          v-model="v.signAnswer"
+          v-model="d.signAnswer"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -57,7 +57,17 @@
     <v-row>
       <v-col cols="12">
           <v-btn
-          :disabled="v.signAnswer.length === 0"
+          color="blue-grey"
+          class="ma-2 white--text"
+          @click="back"
+          absolute
+          left
+          >
+          <v-icon left dark>mdi-arrow-left</v-icon>
+          Back
+          </v-btn>
+          <v-btn
+          :disabled="d.signAnswer.length === 0"
           color="blue-grey"
           class="ma-2 white--text"
           @click="next"
@@ -77,13 +87,11 @@
   export default {
     props: {
       nextf: { type: Function },
+      backf: { type: Function },
       d: Object
     },
 
     data: () => ({
-      v: {
-        signAnswer:''
-      },
       message: '',
       rules: {
           required: value => !!value || 'Required.'
@@ -92,7 +100,10 @@
 
     methods: {
       next(){
-        this.nextf(this.v)
+        this.nextf()
+      },
+      back(){
+        this.backf()
       },
       signMessage() {
         window.ipcRenderer.invoke('rpc', 
@@ -106,7 +117,7 @@
           .then((result) => {
             if(result.success){
               if(!result.result.error){
-                this.v.signAnswer = result.result.result
+                this.d.signAnswer = result.result.result
               } else{
                 this.message = result.result.error.code + " : " + result.result.error.message
               }

@@ -30,7 +30,7 @@
           label="Server IPv4"
           :rules="[rules.required, rules.ipv4]"
           outlined
-          v-model="v.serverIp"
+          v-model="d.serverIp"
         ></v-text-field>
       </v-col>
       <v-col cols="5">
@@ -38,7 +38,7 @@
           label="Server Port"
           :rules="[rules.required, rules.port]"
           outlined
-          v-model="v.serverPort"
+          v-model="d.serverPort"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -46,7 +46,17 @@
     <v-row>
       <v-col cols="12">
           <v-btn
-          :disabled="v.serverIp.length === 0 || v.serverPort.length === 0 "
+          color="blue-grey"
+          class="ma-2 white--text"
+          @click="back"
+          absolute
+          left
+          >
+          <v-icon left dark>mdi-arrow-left</v-icon>
+          Back
+          </v-btn>
+          <v-btn
+          :disabled="d.serverIp.length === 0 || d.serverPort.length === 0 "
           color="blue-grey"
           class="ma-2 white--text"
           @click="next"
@@ -66,14 +76,11 @@
   export default {
     props: {
       nextf: { type: Function },
+      backf: { type: Function },
       d: Object
     },
 
     data: () => ({
-      v: {
-        serverIp:'',
-        serverPort:'7577'
-      },
       rules: {
           required: value => !!value || 'Required.',
           port: value => {
@@ -89,8 +96,11 @@
 
     methods: {
       next(){
-        this.nextf(this.v)
-      }
+        this.nextf()
+      },
+      back(){
+        this.backf()
+      },
     }
   }
 </script>

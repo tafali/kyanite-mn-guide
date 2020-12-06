@@ -61,7 +61,7 @@
           :rules="[rules.required, rules.hash64]"
           outlined
           hint="For example, a138b262dc3e3....."
-          v-model="v.collateralHash"
+          v-model="d.collateralHash"
         ></v-text-field>
       </v-col>
 
@@ -71,7 +71,7 @@
           :rules="[rules.required, rules.number]"
           outlined
           hint="Number, like 0, 1, 2 ..."
-          v-model="v.collateralIndex"
+          v-model="d.collateralIndex"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -79,7 +79,17 @@
     <v-row>
       <v-col cols="12">
           <v-btn
-          :disabled="v.collateralHash.length === 0 || v.collateralIndex.length === 0 "
+          color="blue-grey"
+          class="ma-2 white--text"
+          @click="back"
+          absolute
+          left
+          >
+          <v-icon left dark>mdi-arrow-left</v-icon>
+          Back
+          </v-btn>
+          <v-btn
+          :disabled="d.collateralHash.length === 0 || d.collateralIndex.length === 0 "
           color="blue-grey"
           class="ma-2 white--text"
           @click="next"
@@ -99,14 +109,11 @@
   export default {
     props: {
       nextf: { type: Function },
+      backf: { type: Function },
       d: Object
     },
 
     data: () => ({
-      v: {
-        collateralHash:'',
-        collateralIndex:''
-      },
       message: '',
       mouts: [],
       selectedoutput:'',
@@ -125,13 +132,16 @@
 
     methods: {
       next(){
-        this.nextf(this.v)
+        this.nextf()
+      },
+      back(){
+        this.backf()
       },
       selectOutput(){
         if(this.selectedoutput.indexOf(':') != -1){
-          [this.v.collateralHash, this.v.collateralIndex] = this.selectedoutput.split(':')
+          [this.d.collateralHash, this.d.collateralIndex] = this.selectedoutput.split(':')
         } else {
-          [this.v.collateralHash, this.v.collateralIndex] = ['', '']
+          [this.d.collateralHash, this.d.collateralIndex] = ['', '']
         }
       },
       masternodeOutputs() {

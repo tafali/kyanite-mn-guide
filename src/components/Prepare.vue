@@ -60,7 +60,7 @@
           label="Tx"
           :rules="[rules.required]"
           outlined
-          v-model="v.prepTx"
+          v-model="d.prepTx"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -71,7 +71,7 @@
           label="Collateral Address"
           :rules="[rules.required]"
           outlined
-          v-model="v.prepCollateralAddress"
+          v-model="d.prepCollateralAddress"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -82,7 +82,7 @@
           label="Sign Message"
           :rules="[rules.required]"
           outlined
-          v-model="v.prepSignMessage"
+          v-model="d.prepSignMessage"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -90,7 +90,17 @@
     <v-row>
       <v-col cols="12">
           <v-btn
-          :disabled="v.prepTx.length === 0 || v.prepCollateralAddress.length === 0 || v.prepSignMessage.length === 0 "
+          color="blue-grey"
+          class="ma-2 white--text"
+          @click="back"
+          absolute
+          left
+          >
+          <v-icon left dark>mdi-arrow-left</v-icon>
+          Back
+          </v-btn>
+          <v-btn
+          :disabled="d.prepTx.length === 0 || d.prepCollateralAddress.length === 0 || d.prepSignMessage.length === 0 "
           color="blue-grey"
           class="ma-2 white--text"
           @click="next"
@@ -110,15 +120,11 @@
   export default {
     props: {
       nextf: { type: Function },
+      backf: { type: Function },
       d: Object
     },
 
     data: () => ({
-      v: {
-        prepTx:'',
-        prepCollateralAddress:'',
-        prepSignMessage:''
-      },
       message: '',
       rules: {
           required: value => !!value || 'Required.'
@@ -127,7 +133,10 @@
 
     methods: {
       next(){
-        this.nextf(this.v)
+        this.nextf()
+      },
+      back(){
+        this.backf()
       },
       registerPrepare() {
         window.ipcRenderer.invoke('rpc', 
@@ -148,9 +157,9 @@
                         "collateralAddress": "KooQo8...",
                         "signMessage": "KXSS7h2s...."
                       }*/
-                this.v.prepTx = po.tx
-                this.v.prepCollateralAddress = po.collateralAddress
-                this.v.prepSignMessage = po.signMessage
+                this.d.prepTx = po.tx
+                this.d.prepCollateralAddress = po.collateralAddress
+                this.d.prepSignMessage = po.signMessage
               } else{
                 this.message = result.result.error.code + " : " + result.result.error.message
               }
