@@ -27,8 +27,8 @@
               MasterNode Outputs
             </v-chip>  
             with <code>masternode outputs</code> 
-            <v-btn icon color="indigo" v-if="!d.manuel" @click="masternodeOutputs()">
-              <v-icon>mdi-arrow-right-drop-circle</v-icon>
+            <v-btn x-small dark color="indigo" v-if="!d.manuel" @click="masternodeOutputs()">
+              Run <v-icon small>mdi-arrow-right-drop-circle</v-icon>
             </v-btn>
         </p>
 

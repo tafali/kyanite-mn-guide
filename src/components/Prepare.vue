@@ -24,8 +24,8 @@
                {{d.addrPayout}}  
                {{d.addrFee}}  <!-- Alert user about this address. It should have coins to pay the transaction fees in it. Also alert that if this address is given blank, payoutAddress will be used for the transaction fees. -->
             </code>
-            <v-btn icon color="indigo" v-if="!d.manuel" @click="registerPrepare()">
-              <v-icon>mdi-arrow-right-drop-circle</v-icon>
+            <v-btn x-small dark color="indigo" v-if="!d.manuel" @click="registerPrepare()">
+              Run <v-icon small>mdi-arrow-right-drop-circle</v-icon>
             </v-btn>
         </p>
       </v-col>

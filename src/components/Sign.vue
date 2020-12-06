@@ -17,8 +17,8 @@
                {{d.prepCollateralAddress}}  
                {{d.prepSignMessage}}
             </code>
-            <v-btn icon color="indigo" v-if="!d.manuel" @click="signMessage()">
-              <v-icon>mdi-arrow-right-drop-circle</v-icon>
+            <v-btn x-small dark color="indigo" v-if="!d.manuel" @click="signMessage()">
+              Run <v-icon small>mdi-arrow-right-drop-circle</v-icon>
             </v-btn>
         </p>
       </v-col>

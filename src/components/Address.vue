@@ -36,8 +36,8 @@
     <v-row>
       <v-col cols="6">
         <code>getnewaddress {{namePrefix}}_owner</code>
-        <v-btn icon color="indigo" v-if="!d.manuel" @click="newAddress('owner')">
-          <v-icon>mdi-arrow-right-drop-circle</v-icon>
+        <v-btn x-small dark color="indigo" v-if="!d.manuel" @click="newAddress('owner')">
+          Run <v-icon small>mdi-arrow-right-drop-circle</v-icon>
         </v-btn>
         <v-text-field
           label="Owner Address"
@@ -50,8 +50,8 @@
 
       <v-col cols="6">
         <code>getnewaddress {{namePrefix}}_voting</code>
-        <v-btn icon color="indigo" v-if="!d.manuel" @click="newAddress('voting')">
-          <v-icon>mdi-arrow-right-drop-circle</v-icon>
+        <v-btn x-small dark color="indigo" v-if="!d.manuel" @click="newAddress('voting')">
+          Run <v-icon small>mdi-arrow-right-drop-circle</v-icon>
         </v-btn>
         <v-text-field
           label="Voting Address"
@@ -65,8 +65,8 @@
     <v-row>
       <v-col cols="6">
         <code>getnewaddress {{namePrefix}}_payout</code>
-        <v-btn icon color="indigo" v-if="!d.manuel" @click="newAddress('payout')">
-          <v-icon>mdi-arrow-right-drop-circle</v-icon>
+        <v-btn x-small dark color="indigo" v-if="!d.manuel" @click="newAddress('payout')">
+          Run <v-icon small>mdi-arrow-right-drop-circle</v-icon>
         </v-btn>
         <v-text-field
           label="Payout Address"
@@ -78,8 +78,8 @@
 
       <v-col cols="6">
         <code>getnewaddress {{namePrefix}}_fee</code>
-        <v-btn icon color="indigo" v-if="!d.manuel" @click="newAddress('fee')">
-          <v-icon>mdi-arrow-right-drop-circle</v-icon>
+        <v-btn x-small dark color="indigo" v-if="!d.manuel" @click="newAddress('fee')">
+          Run <v-icon small>mdi-arrow-right-drop-circle</v-icon>
         </v-btn>
         <v-text-field
           label="Fee Address (If you want, you can use 'Payout Address)"

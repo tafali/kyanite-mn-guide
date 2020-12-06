@@ -17,8 +17,8 @@
                {{d.prepTx}}  
                {{d.signAnswer}}
             </code>
-            <v-btn icon color="indigo" v-if="!d.manuel" @click="submitReg()">
-              <v-icon>mdi-arrow-right-drop-circle</v-icon>
+            <v-btn x-small dark color="indigo" v-if="!d.manuel" @click="submitReg()">
+              Run <v-icon small>mdi-arrow-right-drop-circle</v-icon>
             </v-btn>
         </p>
       </v-col>

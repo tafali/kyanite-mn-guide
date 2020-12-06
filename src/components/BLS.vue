@@ -16,8 +16,8 @@
               BLS key pair
             </v-chip>  
             with <code>bls generate</code>
-            <v-btn icon color="indigo" v-if="!d.manuel" @click="blsGenerate()">
-              <v-icon>mdi-arrow-right-drop-circle</v-icon>
+            <v-btn x-small dark color="indigo" v-if="!d.manuel" @click="blsGenerate()">
+              Run <v-icon small>mdi-arrow-right-drop-circle</v-icon>
             </v-btn>
         </p>
       </v-col>

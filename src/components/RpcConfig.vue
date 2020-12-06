@@ -13,9 +13,9 @@
 			</p>
 			<p class="teal text-center">
 				<span class="pa-3 white--text">To run commands, you can use </span>
-				<v-btn icon color="white">
-					<v-icon>mdi-arrow-right-drop-circle</v-icon>
-				</v-btn>
+				<v-btn x-small dark color="indigo">
+          Run <v-icon right small>mdi-arrow-right-drop-circle</v-icon>
+        </v-btn>
 				<span class="white--text">button next to the command.</span>
 			</p>
 			<p>
