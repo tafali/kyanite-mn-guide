@@ -5,7 +5,8 @@
       <v-col class="mb-4">
         <v-checkbox
           v-model="d.manuel"
-        > <template v-slot:label> <span class="teal--text darken-2 bold"> I want to setup manually </span> </template></v-checkbox>
+        > <template v-slot:label> <span class="teal--text darken-2 bold"> I want to setup manually </span> </template>
+        </v-checkbox>
 
 		<div v-if="!d.manuel">
 			<p> Please copy and paste your <code>rpcuser</code> and <code>rpcpassword</code> 

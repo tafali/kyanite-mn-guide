@@ -40,10 +40,16 @@
               </pre>
             </v-subheader>
         </p>
+
+        <v-checkbox
+          v-model="lastrun"
+        > <template v-slot:label> <span class="teal--text darken-2 bold"> I run it as well</span> </template>
+        </v-checkbox>
+
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row v-if="lastrun">
       <v-col>
         <p>And, Done!</p>
         <p>To check, you can use this command in your 
@@ -73,7 +79,7 @@
           <v-icon left dark>mdi-arrow-left</v-icon>
           Back
           </v-btn>
-          <v-btn
+          <v-btn  v-if="lastrun"
           color="blue-grey"
           class="ma-2 white--text"
           @click="newNode"
@@ -98,7 +104,8 @@
     },
 
     data: () => ({
-      message: ''
+      message: '',
+      lastrun: false
     }),
 
     methods: {

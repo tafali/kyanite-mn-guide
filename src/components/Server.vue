@@ -15,6 +15,12 @@
 
             And re-run it with <code>./kyand</code>
         </p>
+
+        <v-checkbox
+          v-model="added"
+        > <template v-slot:label> <span class="teal--text darken-2 bold"> I added it</span> </template>
+        </v-checkbox>
+
       </v-col>
     </v-row>
 
@@ -56,7 +62,7 @@
           Back
           </v-btn>
           <v-btn
-          :disabled="d.serverIp.length === 0 || d.serverPort.length === 0 "
+          :disabled="d.serverIp.length === 0 || d.serverPort.length === 0 || !added"
           color="blue-grey"
           class="ma-2 white--text"
           @click="next"
@@ -81,6 +87,7 @@
     },
 
     data: () => ({
+      added: false,
       rules: {
           required: value => !!value || 'Required.',
           port: value => {
