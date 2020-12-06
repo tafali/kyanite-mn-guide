@@ -16,9 +16,9 @@
             And re-run it with <code>./kyand</code>
         </p>
 
-        <v-checkbox
+        <v-checkbox class="pa-2 warning text-no-wrap rounded-r-xl" dark color="indigo"
           v-model="added"
-        > <template v-slot:label> <span class="teal--text darken-2 bold"> I added it</span> </template>
+        > <template v-slot:label> <span > I added it</span> </template>
         </v-checkbox>
 
       </v-col>

@@ -41,9 +41,9 @@
             </v-subheader>
         </p>
 
-        <v-checkbox
+        <v-checkbox class="pa-2 warning text-no-wrap rounded-r-xl" dark color="indigo"
           v-model="lastrun"
-        > <template v-slot:label> <span class="teal--text darken-2 bold"> I run it as well</span> </template>
+        > <template v-slot:label> <span > I run it as well</span> </template>
         </v-checkbox>
 
       </v-col>
