@@ -1,4 +1,6 @@
-# Kyanite Mastrnode Installation Guide
+# (OLD) Kyanite Mastrnode Installation Guide
+
+no longer used
 
 ## Project setup
 ```
